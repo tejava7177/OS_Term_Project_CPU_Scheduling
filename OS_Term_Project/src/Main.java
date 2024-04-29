@@ -12,6 +12,9 @@ public class Main {
 
         FCFS fcfs = new FCFS(processes);
         fcfs.run();
+
+        SJF sjf = new SJF(processes);
+        sjf.run();
     }
 }
 
