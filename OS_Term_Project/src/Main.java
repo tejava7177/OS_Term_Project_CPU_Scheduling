@@ -10,7 +10,8 @@ public class Main {
         processes.add(new Process(4,3,4,1));
         processes.add(new Process(5,4,14,2));
 
-        
+        FCFS fcfs = new FCFS(processes);
+        fcfs.run();
     }
 }
 
