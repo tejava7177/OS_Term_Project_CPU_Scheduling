@@ -1,65 +1,57 @@
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
+import java.util.Comparator;
 
-class SJF {
-    List<Process> processes;
+public class SJF {
+    private List<Process> processQueue;
 
-    public SJF(List<Process> processes) {
-        this.processes = new ArrayList<>(processes);
+    public SJF(List<Process> incomingProcesses) {
+        processQueue = new ArrayList<>(incomingProcesses);
+        // 도착 시간으로 초기 정렬을 하여 준비 큐를 만듭니다.
+        processQueue.sort(Comparator.comparingInt(proc -> proc.getArrivalTime()));
     }
 
     public void run() {
-        // 프로세스를 도착 시간 순으로 정렬
-        processes.sort(Comparator.comparingInt(p -> p.arrivalTime));
-
-        // 처리할 프로세스를 저장할 우선순위 큐
-        PriorityQueue<Process> queue = new PriorityQueue<>(Comparator.comparingInt(p -> p.serviceTime));
-
+        PriorityQueue<Process> readyQueue = new PriorityQueue<>(Comparator.comparingInt(Process::getServiceTime));
         int currentTime = 0;
-        int totalWaitingTime = 0;
-        int totalTurnaroundTime = 0;
+        int accumulatedWaitTime = 0;
+        int accumulatedTurnaroundTime = 0;
 
-        int index = 0;
+        int processIndex = 0; // 이 인덱스는 전체 프로세스 목록을 추적합니다.
 
         System.out.println("PID | Arrival Time | Service Time | Start Time | Finish Time | Waiting Time | Turnaround Time");
 
-
-        //핵심 코드
-        // 모든 프로세스가 처리될 때까지 또는 우선순위 큐가 비어있지 않을 때까지 반복
-        while (index < processes.size() || !queue.isEmpty()) {
-            // 현재 시간 이하로 도착한 프로세스들을 우선순위 큐에 추가
-            while (index < processes.size() && processes.get(index).arrivalTime <= currentTime) {
-                queue.add(processes.get(index)); // 프로세스를 우선순위 큐에 추가
-                index++; // 다음 프로세스로 인덱스 이동
+        while (processIndex < processQueue.size() || !readyQueue.isEmpty()) {
+            // 현재 시간에 맞춰 준비 큐에 프로세스를 추가합니다.
+            while (processIndex < processQueue.size() && processQueue.get(processIndex).getArrivalTime() <= currentTime) {
+                readyQueue.add(processQueue.get(processIndex));
+                processIndex++;
             }
 
-            // 우선순위 큐가 비어있다면, 다음 프로세스가 도착할 때까지 시간을 뛰어넘음
-            if (queue.isEmpty()) {
-                currentTime = processes.get(index).arrivalTime; // 현재 시간을 다음 프로세스의 도착 시간으로 설정
-                continue; // 다음 반복으로 넘어감
+            if (readyQueue.isEmpty()) {
+                // 다음 프로세스의 도착을 기다립니다.
+                currentTime = processQueue.get(processIndex).getArrivalTime();
+                continue;
             }
 
-            Process process = queue.poll();
+            Process currentProcess = readyQueue.poll(); // 가장 짧은 서비스 시간을 가진 프로세스 선택
             int startTime = currentTime;
-            int finishTime = startTime + process.serviceTime;
-            int waitingTime = startTime - process.arrivalTime;
-            int turnaroundTime = finishTime - process.arrivalTime;
+            int finishTime = startTime + currentProcess.getServiceTime();
+            int waitTime = startTime - currentProcess.getArrivalTime();
+            int turnaroundTime = finishTime - currentProcess.getArrivalTime();
 
             System.out.printf("%3d | %12d | %12d | %10d | %11d | %12d | %15d\n",
-                    process.id, process.arrivalTime, process.serviceTime, startTime, finishTime, waitingTime, turnaroundTime);
+                    currentProcess.getId(), currentProcess.getArrivalTime(), currentProcess.getServiceTime(), startTime, finishTime, waitTime, turnaroundTime);
 
-            currentTime = finishTime;
-            totalWaitingTime += waitingTime;
-            totalTurnaroundTime += turnaroundTime;
+            currentTime = finishTime; // 현재 시간 업데이트
+            accumulatedWaitTime += waitTime; // 총 대기 시간 업데이트
+            accumulatedTurnaroundTime += turnaroundTime; // 총 반환 시간 업데이트
         }
 
-
-
-
-        double averageWaitingTime = (double) totalWaitingTime / processes.size();
-        double averageTurnaroundTime = (double) totalTurnaroundTime / processes.size();
+        // 평균 대기 시간과 평균 반환 시간을 계산하여 출력합니다.
+        double averageWaitingTime = (double) accumulatedWaitTime / processQueue.size();
+        double averageTurnaroundTime = (double) accumulatedTurnaroundTime / processQueue.size();
 
         System.out.printf("\nAverage Waiting Time: %.2f\n", averageWaitingTime);
         System.out.printf("Average Turnaround Time: %.2f\n", averageTurnaroundTime);

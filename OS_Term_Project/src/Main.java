@@ -15,6 +15,8 @@ public class Main {
 
         SJF sjf = new SJF(processes);
         sjf.run();
+
+
     }
 }
 
@@ -32,4 +34,23 @@ class Process {
         this.serviceTime = serviceTime;
         this.priority = priority;
     }
+
+
+    // Getter 메서드 추가
+    public int getId() {
+        return id;
+    }
+
+    public int getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public int getServiceTime() {
+        return serviceTime;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
 }
