@@ -17,14 +17,21 @@ public class Scheduler {
 //        SJF sjf = new SJF(processes);
 //        sjf.run();
 //
-        HRN hrn = new HRN(processes);
-        hrn.run();
+//        HRN hrn = new HRN(processes);
+//        hrn.run();
 //
 //        RoundRobin rr = new RoundRobin(processes, 2);  // 시간 할당량을 5로 설정
 //        rr.run();
 //
 //        SRT srt = new SRT(processes, 2); // 시간 할당량을 2로 설정
 //        srt.run();
+
+
+        NonPreemptivePriority npPriority = new NonPreemptivePriority(processes);
+        npPriority.run();
+
+        PreemptivePriority pp = new PreemptivePriority(processes);
+        pp.run();
     }
 }
 
@@ -37,6 +44,8 @@ class Process {
     int priority;       // 우선순위
 
 
+    int initialServiceTime; // 초기 서비스 시간 (생성 시의 서비스 시간)
+
 
     int startTime = -1;
     int finishTime = -1;
@@ -47,6 +56,7 @@ class Process {
         this.id = id;
         this.arrivalTime = arrivalTime;
         this.serviceTime = serviceTime;
+        this.initialServiceTime = serviceTime; // 초기 서비스 시간 설정
         this.priority = priority;
     }
 
