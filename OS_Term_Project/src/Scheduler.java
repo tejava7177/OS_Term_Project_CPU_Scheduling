@@ -17,11 +17,14 @@ public class Scheduler {
 //        SJF sjf = new SJF(processes);
 //        sjf.run();
 //
-//        HRN hrn = new HRN(processes);
-//        hrn.run();
-
-        RoundRobin rr = new RoundRobin(processes, 5);  // 시간 할당량을 5로 설정
-        rr.run();
+        HRN hrn = new HRN(processes);
+        hrn.run();
+//
+//        RoundRobin rr = new RoundRobin(processes, 2);  // 시간 할당량을 5로 설정
+//        rr.run();
+//
+//        SRT srt = new SRT(processes, 2); // 시간 할당량을 2로 설정
+//        srt.run();
     }
 }
 
@@ -74,4 +77,7 @@ class Process {
         }
         return -1;  // 이미 처리된 프로세스
     }
+
+
+
 }

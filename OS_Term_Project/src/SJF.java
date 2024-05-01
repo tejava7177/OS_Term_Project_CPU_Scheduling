@@ -12,6 +12,8 @@ public class SJF {
         processQueue.sort(Comparator.comparingInt(proc -> proc.getArrivalTime()));
     }
 
+
+
     public void run() {
         PriorityQueue<Process> readyQueue = new PriorityQueue<>(Comparator.comparingInt(Process::getServiceTime));
         int currentTime = 0;
