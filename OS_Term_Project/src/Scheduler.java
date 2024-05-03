@@ -80,6 +80,7 @@ class Process {
 
 
     //우선순위를 계산하는 responseRatio(응답률)
+    //이걸 HRN에 보내는 방법을 찾아보자.
     public double responseRatio(int currentTime) {
         if (startTime == -1) {  // 아직 시작하지 않았을 경우
             int timeWaited = currentTime - arrivalTime;
