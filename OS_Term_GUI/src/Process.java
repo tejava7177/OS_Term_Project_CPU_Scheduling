@@ -1,14 +1,21 @@
 public class Process {
     private int id, arrivalTime, serviceTime, priority;
-    private int startTime, finishTime, waitingTime, turnaroundTime;
-    private boolean visited;  // 방문 상태를 추적하는 변수
+
+    private  double responseRatio;
+    private int remainingServiceTime;  // 남은 실행 시간
+    private int startTime = -1;  // 실행 시작 시간, 초기값 -1로 설정
+    private int finishTime;  // 실행 완료 시간
+    private int waitingTime;  // 대기 시간
+    private int turnaroundTime;  // 반환 시간
+
 
     public Process(int id, int arrivalTime, int serviceTime, int priority) {
         this.id = id;
         this.arrivalTime = arrivalTime;
         this.serviceTime = serviceTime;
+        this.remainingServiceTime = serviceTime;  // 초기 남은 실행 시간은 전체 서비스 시간과 같다
         this.priority = priority;
-        this.visited = false;  // 초기화 시에는 방문하지 않은 상태로 설정
+        this.responseRatio = 0.0;
     }
 
     // Getter와 Setter
@@ -52,6 +59,15 @@ public class Process {
         this.waitingTime = waitingTime;
     }
 
+    //HRN
+    public double getResponseRatio(){
+        return responseRatio;
+    }
+
+    public void setResponseRatio(double responseRatio){
+        this.responseRatio = responseRatio;
+    }
+
     public int getTurnaroundTime() {
         return turnaroundTime;
     }
@@ -60,11 +76,12 @@ public class Process {
         this.turnaroundTime = turnaroundTime;
     }
 
-    public boolean isVisited() {
-        return visited;
+
+    public int getRemainingServiceTime() {
+        return remainingServiceTime;
     }
 
-    public void setVisited(boolean visited) {
-        this.visited = visited;
+    public void setRemainingServiceTime(int remainingServiceTime) {
+        this.remainingServiceTime = remainingServiceTime;
     }
 }

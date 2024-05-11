@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -112,22 +111,6 @@ public class ProcessInputGUI extends JFrame {
         SwingUtilities.invokeLater(ProcessInputGUI::new);
     }
 
-//    static class Process {
-//        private int id, arrivalTime, serviceTime, priority;
-//
-//        public Process(int id, int arrivalTime, int serviceTime, int priority) {
-//            this.id = id;
-//            this.arrivalTime = arrivalTime;
-//            this.serviceTime = serviceTime;
-//            this.priority = priority;
-//        }
-//
-//        public int getId() { return id; }
-//        public int getArrivalTime() { return arrivalTime; }
-//        public int getServiceTime() { return serviceTime; }
-//        public int getPriority() { return priority; }
-//    }
-
 
     private void executeAlgorithm(String algorithm) {
         switch (algorithm) {
@@ -142,6 +125,25 @@ public class ProcessInputGUI extends JFrame {
                 sjf.run();
                 break;
 
+            case "Non-preemptive Priority":
+                executeNpP npp= new executeNpP(processes);
+                npp.run();
+                break;
+
+            case "HRN":
+                executeHRN hrn= new executeHRN(processes);
+                hrn.run();
+                break;
+
+//            case "Preemptive Priority":
+//                executePP pp = new executePP(processes);
+//                pp.run();
+//                break;
+
+//            case "HRN":
+//                executeHRN hrn = new executeHRN(processes);
+//                hrn.run();
+//                break;
 
         }
     }

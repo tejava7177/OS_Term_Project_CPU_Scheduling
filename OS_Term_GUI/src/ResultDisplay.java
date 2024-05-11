@@ -41,10 +41,12 @@ public class ResultDisplay extends JFrame {
     }
 }
 
+
+
 class GanttChartPanel extends JPanel {
     private List<Process> processes;
     private int maxTime = 0;
-    private final int numTicks = 10; // 눈금의 수
+    private final int numTicks = 10;
 
     public GanttChartPanel(List<Process> processes) {
         this.processes = processes;
@@ -53,7 +55,8 @@ class GanttChartPanel extends JPanel {
                 maxTime = process.getFinishTime();
             }
         }
-        setPreferredSize(new Dimension(600, 100));
+        // 동적 높이 조정: 프로세스 수에 따라 높이 변경
+        setPreferredSize(new Dimension(600, Math.max(100, processes.size() * 20 + 30)));
     }
 
     @Override
@@ -61,13 +64,11 @@ class GanttChartPanel extends JPanel {
         super.paintComponent(g);
         int width = getWidth();
         int height = getHeight();
-        int barHeight = height / (processes.size() + 1);
+        int barHeight = Math.max(20, height / (processes.size() + 2));
         int xOffset = 10;
 
-        // 간트 차트 눈금 그리기
         drawTicks(g, width, height, xOffset);
 
-        // 프로세스 바와 대기 시간 그리기
         for (int i = 0; i < processes.size(); i++) {
             Process process = processes.get(i);
             int startWaitX = (int) ((process.getArrivalTime() / (double) maxTime) * (width - 2 * xOffset));
@@ -76,28 +77,24 @@ class GanttChartPanel extends JPanel {
             int waitWidth = startX - startWaitX;
             int barWidth = endX - startX;
 
-            // 대기 시간 그리기 (회색)
             g.setColor(Color.GRAY);
-            g.fillRect(xOffset + startWaitX, i * barHeight, waitWidth, barHeight - 5);
+            g.fillRect(xOffset + startWaitX, i * barHeight + 10, waitWidth, barHeight - 5);
 
-            // 실행 시간 그리기 (파란색)
             g.setColor(new Color(100, 150, 255));
-            g.fillRect(xOffset + startX, i * barHeight, barWidth, barHeight - 5);
+            g.fillRect(xOffset + startX, i * barHeight + 10, barWidth, barHeight - 5);
 
             g.setColor(Color.BLACK);
-            g.drawString("P" + process.getId(), xOffset + startX + 5, i * barHeight + barHeight / 2);
+            g.drawString("P" + process.getId(), xOffset + startX + 5, i * barHeight + barHeight / 2 + 15);
         }
     }
 
     private void drawTicks(Graphics g, int width, int height, int xOffset) {
-        g.setColor(Color.BLACK);
         int tickSpacing = (width - 2 * xOffset) / numTicks;
         for (int i = 0; i <= numTicks; i++) {
             int x = xOffset + i * tickSpacing;
-            g.drawLine(x, 0, x, height);
+            g.drawLine(x, height - 30, x, height - 20);
             int time = (int)((i / (double) numTicks) * maxTime);
             g.drawString(String.valueOf(time), x - 5, height - 5);
         }
     }
 }
-
