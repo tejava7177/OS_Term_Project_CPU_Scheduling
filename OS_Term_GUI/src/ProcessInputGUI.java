@@ -135,10 +135,10 @@ public class ProcessInputGUI extends JFrame {
                 hrn.run();
                 break;
 
-//            case "Preemptive Priority":
-//                executePP pp = new executePP(processes);
-//                pp.run();
-//                break;
+            case "Preemptive Priority":
+                executePP pp = new executePP(processes);
+                pp.run();
+                break;
 
 //            case "HRN":
 //                executeHRN hrn = new executeHRN(processes);

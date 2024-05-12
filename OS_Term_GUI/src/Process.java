@@ -1,6 +1,7 @@
 public class Process {
     private int id, arrivalTime, serviceTime, priority;
 
+    private boolean visited;
     private  double responseRatio;
     private int remainingServiceTime;  // 남은 실행 시간
     private int startTime = -1;  // 실행 시작 시간, 초기값 -1로 설정
@@ -15,6 +16,7 @@ public class Process {
         this.serviceTime = serviceTime;
         this.remainingServiceTime = serviceTime;  // 초기 남은 실행 시간은 전체 서비스 시간과 같다
         this.priority = priority;
+        this.visited = false;
         this.responseRatio = 0.0;
     }
 
@@ -57,6 +59,15 @@ public class Process {
 
     public void setWaitingTime(int waitingTime) {
         this.waitingTime = waitingTime;
+    }
+
+    //SJF
+    public boolean isVisited(){
+        return visited;
+    }
+
+    public void setVisited(boolean visited){
+        this.visited = visited;
     }
 
     //HRN
