@@ -11,10 +11,12 @@ public class ProcessInputGUI extends JFrame {
     private JTextArea processListDisplay;
     private JComboBox<String> algorithmComboBox;
 
+    private int timeSlice; // 타임슬라이스를 저장할 변수 추가
+
     public ProcessInputGUI() {
         super("Process Input");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(550, 400);
+        setSize(600, 400);
         setLayout(new GridLayout(7, 2, 10, 10));  // Adjust grid layout rows for additional components
 
         // Initialize components
@@ -52,7 +54,7 @@ public class ProcessInputGUI extends JFrame {
         add(arrivalTimeField);
         add(new JLabel("Service Time:"));
         add(serviceTimeField);
-        add(new JLabel("Priority:"));
+        add(new JLabel("Priority(default 0):"));
         add(priorityField);
         add(deleteButton);
         add(addButton);
@@ -63,10 +65,18 @@ public class ProcessInputGUI extends JFrame {
 
     private void addProcessAction(ActionEvent e) {
         try {
-            int id = Integer.parseInt(idField.getText());
+            String id = idField.getText();
             int arrival = Integer.parseInt(arrivalTimeField.getText());
             int service = Integer.parseInt(serviceTimeField.getText());
-            int priority = Integer.parseInt(priorityField.getText());
+            int priority;
+
+            String priorityText = priorityField.getText();
+            if (priorityText.isEmpty()) {
+                priority = 0; // Priority 필드가 비어있으면 기본값 0 사용
+            } else {
+                priority = Integer.parseInt(priorityField.getText());
+            }
+
             Process process = new Process(id, arrival, service, priority);
             processes.add(process);
             displayProcesses();
@@ -97,6 +107,16 @@ public class ProcessInputGUI extends JFrame {
 
     private void runSelectedAlgorithm(ActionEvent e) {
         String selectedAlgorithm = (String) algorithmComboBox.getSelectedItem();
+        if("Round Robin".equals(selectedAlgorithm) || "SRT".equals(selectedAlgorithm)){
+            String input = JOptionPane.showInputDialog(this, "Enter Time Slice", "Time slice Input", JOptionPane.QUESTION_MESSAGE);
+            try{
+                timeSlice = Integer.parseInt(input);
+
+            }
+            catch (NumberFormatException ex){
+                JOptionPane.showMessageDialog(this, "Invalid time Slice, Please enter a valid number");
+            }
+        }
         executeAlgorithm(selectedAlgorithm);
     }
 
@@ -140,10 +160,11 @@ public class ProcessInputGUI extends JFrame {
                 pp.run();
                 break;
 
-//            case "HRN":
-//                executeHRN hrn = new executeHRN(processes);
-//                hrn.run();
-//                break;
+            case "Round Robin":
+
+                executeRR rr = new executeRR(processes, timeSlice);
+                rr.run();
+                break;
 
         }
     }

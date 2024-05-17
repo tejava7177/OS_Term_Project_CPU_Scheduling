@@ -1,5 +1,7 @@
 public class Process {
-    private int id, arrivalTime, serviceTime, priority;
+
+    private String id;
+    private int arrivalTime, serviceTime, priority;
 
     private boolean visited;
     private  double responseRatio;
@@ -10,7 +12,7 @@ public class Process {
     private int turnaroundTime;  // 반환 시간
 
 
-    public Process(int id, int arrivalTime, int serviceTime, int priority) {
+    public Process(String id, int arrivalTime, int serviceTime, int priority) {
         this.id = id;
         this.arrivalTime = arrivalTime;
         this.serviceTime = serviceTime;
@@ -21,7 +23,7 @@ public class Process {
     }
 
     // Getter와 Setter
-    public int getId() {
+    public String  getId() {
         return id;
     }
 
