@@ -1,17 +1,123 @@
+//public class Process {
+//
+//    private String id;
+//    private int arrivalTime, serviceTime, priority;
+//
+//    private boolean visited;
+//    private  double responseRatio;
+//    private int remainingServiceTime;  // 남은 실행 시간
+//    private int startTime = -1;  // 실행 시작 시간, 초기값 -1로 설정
+//    private int finishTime;  // 실행 완료 시간
+//    private int waitingTime;  // 대기 시간
+//    private int turnaroundTime;  // 반환 시간
+//
+//
+//    public Process(String id, int arrivalTime, int serviceTime, int priority) {
+//        this.id = id;
+//        this.arrivalTime = arrivalTime;
+//        this.serviceTime = serviceTime;
+//        this.remainingServiceTime = serviceTime;  // 초기 남은 실행 시간은 전체 서비스 시간과 같다
+//        this.priority = priority;
+//        this.visited = false;
+//        this.responseRatio = 0.0;
+//    }
+//
+//    // Getter와 Setter
+//    public String  getId() {
+//        return id;
+//    }
+//
+//    public int getArrivalTime() {
+//        return arrivalTime;
+//    }
+//
+//    public int getServiceTime() {
+//        return serviceTime;
+//    }
+//
+//    public int getPriority() {
+//        return priority;
+//    }
+//
+//    public int getStartTime() {
+//        return startTime;
+//    }
+//
+//    public void setStartTime(int startTime) {
+//        this.startTime = startTime;
+//    }
+//
+//    public int getFinishTime() {
+//        return finishTime;
+//    }
+//
+//    public void setFinishTime(int finishTime) {
+//        this.finishTime = finishTime;
+//    }
+//
+//    public int getWaitingTime() {
+//        return waitingTime;
+//    }
+//
+//    public void setWaitingTime(int waitingTime) {
+//        this.waitingTime = waitingTime;
+//    }
+//
+//    //SJF
+//    public boolean isVisited(){
+//        return visited;
+//    }
+//
+//    public void setVisited(boolean visited){
+//        this.visited = visited;
+//    }
+//
+//    //HRN
+//    public double getResponseRatio(){
+//        return responseRatio;
+//    }
+//
+//    public void setResponseRatio(double responseRatio){
+//        this.responseRatio = responseRatio;
+//    }
+//
+//    public int getTurnaroundTime() {
+//        return turnaroundTime;
+//    }
+//
+//    public void setTurnaroundTime(int turnaroundTime) {
+//        this.turnaroundTime = turnaroundTime;
+//    }
+//
+//
+//    public int getRemainingServiceTime() {
+//        return remainingServiceTime;
+//    }
+//
+//    public void setRemainingServiceTime(int remainingServiceTime) {
+//        this.remainingServiceTime = remainingServiceTime;
+//    }
+//}
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Process {
 
-    private String id;
-    private int arrivalTime, serviceTime, priority;
+    private String id;          //ID 문자열
+    private int arrivalTime, serviceTime, priority;     //기본적으로 도착시간, 서비스시간, 우선순위
 
     private boolean visited;
-    private  double responseRatio;
-    private int remainingServiceTime;  // 남은 실행 시간
-    private int startTime = -1;  // 실행 시작 시간, 초기값 -1로 설정
-    private int finishTime;  // 실행 완료 시간
-    private int waitingTime;  // 대기 시간
-    private int turnaroundTime;  // 반환 시간
+    private double responseRatio;                       //응답률 HRN에 사용
+    private int remainingServiceTime;                   // 남은 실행 시간
+    private int startTime = -1;                         // 실행 시작 시간, 초기값 -1로 설정
+    private int finishTime;                             // 실행 완료 시간
+    private int waitingTime;                            // 대기 시간
+    private int turnaroundTime;                         // 반환 시간
+    private List<int[]> executionIntervals = new ArrayList<>();  // 실행 구간을 저장할 리스트
+    private List<int[]> waitingIntervals = new ArrayList<>();  // 대기 구간을 저장할 리스트
 
-
+    //객체 생성
     public Process(String id, int arrivalTime, int serviceTime, int priority) {
         this.id = id;
         this.arrivalTime = arrivalTime;
@@ -19,11 +125,11 @@ public class Process {
         this.remainingServiceTime = serviceTime;  // 초기 남은 실행 시간은 전체 서비스 시간과 같다
         this.priority = priority;
         this.visited = false;
-        this.responseRatio = 0.0;
+        this.responseRatio = 0.0;                   //응답률은 0 으로 초기화
     }
 
     // Getter와 Setter
-    public String  getId() {
+    public String getId() {
         return id;
     }
 
@@ -63,21 +169,19 @@ public class Process {
         this.waitingTime = waitingTime;
     }
 
-    //SJF
-    public boolean isVisited(){
+    public boolean isVisited() {
         return visited;
     }
 
-    public void setVisited(boolean visited){
+    public void setVisited(boolean visited) {
         this.visited = visited;
     }
 
-    //HRN
-    public double getResponseRatio(){
+    public double getResponseRatio() {
         return responseRatio;
     }
 
-    public void setResponseRatio(double responseRatio){
+    public void setResponseRatio(double responseRatio) {
         this.responseRatio = responseRatio;
     }
 
@@ -89,12 +193,28 @@ public class Process {
         this.turnaroundTime = turnaroundTime;
     }
 
-
     public int getRemainingServiceTime() {
         return remainingServiceTime;
     }
 
     public void setRemainingServiceTime(int remainingServiceTime) {
         this.remainingServiceTime = remainingServiceTime;
+    }
+
+    // 실행 구간과 대기 구간을 위한 메소드 추가
+    public List<int[]> getExecutionIntervals() {
+        return executionIntervals;
+    }
+
+    public List<int[]> getWaitingIntervals() {
+        return waitingIntervals;
+    }
+
+    public void addExecutionInterval(int start, int end) {
+        executionIntervals.add(new int[]{start, end});
+    }
+
+    public void addWaitingInterval(int start, int end) {
+        waitingIntervals.add(new int[]{start, end});
     }
 }

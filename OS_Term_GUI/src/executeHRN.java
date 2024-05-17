@@ -16,6 +16,7 @@ public class executeHRN {
         int currentTime = 0;
         float totalWaitingTime = 0;
         float totalTurnaroundTime = 0;
+
         List<Process> completedProcesses = new ArrayList<>();
 
         while (!processes.isEmpty()) {
@@ -51,6 +52,7 @@ public class executeHRN {
             completedProcesses.add(nextProcess);
 
             currentTime = nextProcess.getFinishTime();
+
             totalWaitingTime += nextProcess.getWaitingTime();
             totalTurnaroundTime += nextProcess.getTurnaroundTime();
         }
@@ -58,7 +60,7 @@ public class executeHRN {
         avgWaitingTime = totalWaitingTime / completedProcesses.size();
         avgTurnaroundTime = totalTurnaroundTime / completedProcesses.size();
 
-        // 결과를 ResultDisplay 클래스를 사용해 GUI로 표시
+
         SwingUtilities.invokeLater(() -> new ResultDisplay("HRN Scheduling Results", completedProcesses, avgWaitingTime, avgTurnaroundTime));
     }
 }

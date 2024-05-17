@@ -4,7 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ac692fca-c950-4c6b-b88f-1b8f1555b47d" name="Changes" comment="" />
+    <list default="true" id="ac692fca-c950-4c6b-b88f-1b8f1555b47d" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../../OS_Term_GUI/out/production/OS_Term_GUI/executeRR.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../OS_Term_GUI/src/executeRR.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../OS_Term_GUI/out/production/OS_Term_GUI/GanttChartPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../OS_Term_GUI/out/production/OS_Term_GUI/GanttChartPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../OS_Term_GUI/out/production/OS_Term_GUI/Process.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../OS_Term_GUI/out/production/OS_Term_GUI/Process.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../OS_Term_GUI/out/production/OS_Term_GUI/ProcessInputGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../OS_Term_GUI/out/production/OS_Term_GUI/ProcessInputGUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../OS_Term_GUI/out/production/OS_Term_GUI/ResultDisplay.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../OS_Term_GUI/out/production/OS_Term_GUI/ResultDisplay.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../OS_Term_GUI/src/Process.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../OS_Term_GUI/src/Process.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../OS_Term_GUI/src/ProcessInputGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../OS_Term_GUI/src/ProcessInputGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../OS_Term_GUI/src/ResultDisplay.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../OS_Term_GUI/src/ResultDisplay.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -18,7 +28,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -32,7 +42,8 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true"
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "settings.editor.selected.configurable": "reference.projectsettings.compiler.javacompiler"
   }
 }]]></component>
   <component name="RunManager">
@@ -59,5 +70,9 @@
       <updated>1714381458573</updated>
     </task>
     <servers />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

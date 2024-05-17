@@ -89,6 +89,9 @@ public class executePP {
     private PriorityQueue<Process> readyQueue;
     private List<Process> completedProcesses = new ArrayList<>();
 
+    private float avgWaitingTime = 0;
+    private float avgTurnaroundTime = 0;
+
     public executePP(List<Process> processes) {
         this.processes = new ArrayList<>(processes);
         this.readyQueue = new PriorityQueue<>(Comparator.comparingInt(Process::getPriority));
@@ -96,6 +99,8 @@ public class executePP {
 
     public void run() {
         int currentTime = 0;
+        float totalWaitingTime = 0;
+        float totalTurnaroundTime = 0;
         Process currentProcess = null;
 
         while (!processes.isEmpty() || !readyQueue.isEmpty() || currentProcess != null) {
@@ -131,30 +136,19 @@ public class executePP {
             }
         }
 
-        // 결과를 GUI로 표시
-        SwingUtilities.invokeLater(() -> displayResults());
-    }
+        // 평균 대기 시간 및 반환 시간 계산
 
-    private void displayResults() {
-        // GUI를 통해 결과를 표시하는 ResultDisplay 클래스 호출
-        new ResultDisplay("Preemptive Priority Scheduling Results", completedProcesses,
-                calculateAverageWaitingTime(), calculateAverageTurnaroundTime());
-    }
-
-    private float calculateAverageWaitingTime() {
-        float totalWaitingTime = 0;
         for (Process p : completedProcesses) {
             totalWaitingTime += p.getWaitingTime();
-        }
-        return totalWaitingTime / completedProcesses.size();
-    }
-
-    private float calculateAverageTurnaroundTime() {
-        float totalTurnaroundTime = 0;
-        for (Process p : completedProcesses) {
             totalTurnaroundTime += p.getTurnaroundTime();
         }
-        return totalTurnaroundTime / completedProcesses.size();
+        avgWaitingTime = totalWaitingTime / completedProcesses.size();
+        avgTurnaroundTime = totalTurnaroundTime / completedProcesses.size();
+
+
+        // 결과를 GUI로 표시
+        SwingUtilities.invokeLater(() -> new ResultDisplay("Preemptive Priority Scheduling Result", completedProcesses, avgWaitingTime, avgTurnaroundTime));
     }
+
 }
 

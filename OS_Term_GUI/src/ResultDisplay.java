@@ -2,8 +2,6 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
-
-
 public class ResultDisplay extends JFrame {
     public ResultDisplay(String title, List<Process> processes, float avgWaitingTime, float avgTurnaroundTime) {
         super(title);
@@ -43,6 +41,8 @@ public class ResultDisplay extends JFrame {
     }
 }
 
+
+
 class GanttChartPanel extends JPanel {
     private List<Process> processes;
     private int maxTime = 0;
@@ -55,6 +55,7 @@ class GanttChartPanel extends JPanel {
                 maxTime = process.getFinishTime();
             }
         }
+        // 동적 높이 조정: 프로세스 수에 따라 높이 변경
         setPreferredSize(new Dimension(600, Math.max(100, processes.size() * 20 + 30)));
     }
 
@@ -68,26 +69,22 @@ class GanttChartPanel extends JPanel {
 
         drawTicks(g, width, height, xOffset);
 
-        // 각 프로세스에 대해 막대 그리기
         for (int i = 0; i < processes.size(); i++) {
             Process process = processes.get(i);
-            int totalStartX = (int) ((process.getStartTime() / (double) maxTime) * (width - 2 * xOffset));
-            int totalEndX = (int) ((process.getFinishTime() / (double) maxTime) * (width - 2 * xOffset));
+            int startWaitX = (int) ((process.getArrivalTime() / (double) maxTime) * (width - 2 * xOffset));
+            int startX = (int) ((process.getStartTime() / (double) maxTime) * (width - 2 * xOffset));
+            int endX = (int) ((process.getFinishTime() / (double) maxTime) * (width - 2 * xOffset));
+            int waitWidth = startX - startWaitX;
+            int barWidth = endX - startX;
 
-            // 프로세스 실행 중 막대 (파란색)
-            g.setColor(Color.BLUE);
-            g.fillRect(xOffset + totalStartX, i * barHeight + 10, totalEndX - totalStartX, barHeight - 5);
+            g.setColor(Color.GRAY);
+            g.fillRect(xOffset + startWaitX, i * barHeight + 10, waitWidth, barHeight - 5);
 
-            // 대기 중인 시간 막대 (초록색)
-            if (process.getStartTime() > process.getArrivalTime()) {
-                int waitEndX = (int) ((process.getStartTime() / (double) maxTime) * (width - 2 * xOffset));
-                g.setColor(Color.GREEN);
-                g.fillRect(xOffset + (int) ((process.getArrivalTime() / (double) maxTime) * (width - 2 * xOffset)), i * barHeight + 10, waitEndX - totalStartX, barHeight - 5);
-            }
+            g.setColor(new Color(100, 150, 255));
+            g.fillRect(xOffset + startX, i * barHeight + 10, barWidth, barHeight - 5);
 
-            // 프로세스 ID 표시
             g.setColor(Color.BLACK);
-            g.drawString("P" + process.getId(), xOffset + totalStartX + 5, i * barHeight + barHeight / 2 + 15);
+            g.drawString("P" + process.getId(), xOffset + startX + 5, i * barHeight + barHeight / 2 + 15);
         }
     }
 
@@ -101,4 +98,3 @@ class GanttChartPanel extends JPanel {
         }
     }
 }
-
