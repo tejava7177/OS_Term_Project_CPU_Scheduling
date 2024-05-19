@@ -1,7 +1,9 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.*;
 import java.util.List;
+
 public class ResultDisplay extends JFrame {
     public ResultDisplay(String title, List<Process> processes, float avgWaitingTime, float avgTurnaroundTime) {
         super(title);
@@ -43,16 +45,28 @@ public class ResultDisplay extends JFrame {
 
 
 
+
+
+
 class GanttChartPanel extends JPanel {
     private List<Process> processes;
-    private int maxTime = 0;
+    private Set<Integer> timePoints;
     private final int numTicks = 10;
 
     public GanttChartPanel(List<Process> processes) {
         this.processes = processes;
+        this.timePoints = new TreeSet<>();
+
+        // 프로세스의 도착 시간과 시작 시간을 timePoints에 추가
         for (Process process : processes) {
-            maxTime = Math.max(maxTime, process.getFinishTime());
+            timePoints.add(process.getArrivalTime());
+            timePoints.add(process.getStartTime());
+            for (int[] slice : process.getTimeSlices()) {
+                timePoints.add(slice[0]);
+                timePoints.add(slice[1]);
+            }
         }
+
         setPreferredSize(new Dimension(600, Math.max(100, processes.size() * 50)));
     }
 
@@ -64,6 +78,8 @@ class GanttChartPanel extends JPanel {
         int barHeight = 40;
         int yOffset = 10;
 
+        int maxTime = timePoints.isEmpty() ? 0 : ((TreeSet<Integer>) timePoints).last();
+
         for (int i = 0; i < processes.size(); i++) {
             Process process = processes.get(i);
             for (int[] slice : process.getTimeSlices()) {
@@ -71,33 +87,45 @@ class GanttChartPanel extends JPanel {
                 int end = slice[1];
                 int state = slice[2];  // 상태: 0 - 대기, 1 - 실행
 
-                int startX = (int) ((start / (double) maxTime) * width);
-                int endX = (int) ((end / (double) maxTime) * width);
-                //g.setColor(state == 1 ? Color.BLUE : Color.GRAY);
-                if (state == 1){
-                    g.setColor(Color.BLUE);
-                }
-                g.fillRect(startX, yOffset + i * (barHeight + 10), endX - startX, barHeight);
+                int startX = timeToX(start, width, maxTime);
+                int endX = timeToX(end, width, maxTime);
 
+                g.setColor(state == 1 ? Color.BLUE : Color.GRAY);
+                g.fillRect(startX, yOffset + i * (barHeight + 10), endX - startX, barHeight);
                 g.setColor(Color.BLACK);
                 g.drawString("P" + process.getId(), startX + 5, yOffset + i * (barHeight + 10) + 20);
             }
-
         }
 
-        drawTicks(g, width, height, 10);
+        drawTicks(g, width, height, maxTime);
     }
 
-    private void drawTicks(Graphics g, int width, int height, int xOffset) {
-        int tickSpacing = (width - 2 * xOffset) / numTicks;
+    private int timeToX(int time, int width, int maxTime) {
+        return (int) ((time / (double) maxTime) * width);
+    }
+
+    private void drawTicks(Graphics g, int width, int height, int maxTime) {
+        // 기존의 tick 간격 계산
+        int tickSpacing = width / numTicks;
+
+        // 기존의 tick을 그리기
         for (int i = 0; i <= numTicks; i++) {
-            int x = xOffset + i * tickSpacing;
-            g.drawLine(x, height - 30, x, height - 20);
+            int x = i * tickSpacing;
             int time = (int) ((i / (double) numTicks) * maxTime);
+            g.drawLine(x, height - 30, x, height - 20);
             g.drawString(String.valueOf(time), x - 5, height - 5);
+        }
+
+        // 의미 있는 시간 표시
+        for (int timePoint : timePoints) {
+            int x = timeToX(timePoint, width, maxTime);
+            g.drawLine(x, height - 30, x, height - 20);
+            g.drawString(String.valueOf(timePoint), x - 5, height - 5);
         }
     }
 }
+
+
 
 
 
