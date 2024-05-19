@@ -51,12 +51,9 @@ class GanttChartPanel extends JPanel {
     public GanttChartPanel(List<Process> processes) {
         this.processes = processes;
         for (Process process : processes) {
-            if (process.getFinishTime() > maxTime) {
-                maxTime = process.getFinishTime();
-            }
+            maxTime = Math.max(maxTime, process.getFinishTime());
         }
-        // 동적 높이 조정: 프로세스 수에 따라 높이 변경
-        setPreferredSize(new Dimension(600, Math.max(100, processes.size() * 20 + 30)));
+        setPreferredSize(new Dimension(600, Math.max(100, processes.size() * 50)));
     }
 
     @Override
@@ -64,28 +61,31 @@ class GanttChartPanel extends JPanel {
         super.paintComponent(g);
         int width = getWidth();
         int height = getHeight();
-        int barHeight = Math.max(20, height / (processes.size() + 2));
-        int xOffset = 10;
-
-        drawTicks(g, width, height, xOffset);
+        int barHeight = 40;
+        int yOffset = 10;
 
         for (int i = 0; i < processes.size(); i++) {
             Process process = processes.get(i);
-            int startWaitX = (int) ((process.getArrivalTime() / (double) maxTime) * (width - 2 * xOffset));
-            int startX = (int) ((process.getStartTime() / (double) maxTime) * (width - 2 * xOffset));
-            int endX = (int) ((process.getFinishTime() / (double) maxTime) * (width - 2 * xOffset));
-            int waitWidth = startX - startWaitX;
-            int barWidth = endX - startX;
+            for (int[] slice : process.getTimeSlices()) {
+                int start = slice[0];
+                int end = slice[1];
+                int state = slice[2];  // 상태: 0 - 대기, 1 - 실행
 
-            g.setColor(Color.GRAY);
-            g.fillRect(xOffset + startWaitX, i * barHeight + 10, waitWidth, barHeight - 5);
+                int startX = (int) ((start / (double) maxTime) * width);
+                int endX = (int) ((end / (double) maxTime) * width);
+                //g.setColor(state == 1 ? Color.BLUE : Color.GRAY);
+                if (state == 1){
+                    g.setColor(Color.BLUE);
+                }
+                g.fillRect(startX, yOffset + i * (barHeight + 10), endX - startX, barHeight);
 
-            g.setColor(new Color(100, 150, 255));
-            g.fillRect(xOffset + startX, i * barHeight + 10, barWidth, barHeight - 5);
+                g.setColor(Color.BLACK);
+                g.drawString("P" + process.getId(), startX + 5, yOffset + i * (barHeight + 10) + 20);
+            }
 
-            g.setColor(Color.BLACK);
-            g.drawString("P" + process.getId(), xOffset + startX + 5, i * barHeight + barHeight / 2 + 15);
         }
+
+        drawTicks(g, width, height, 10);
     }
 
     private void drawTicks(Graphics g, int width, int height, int xOffset) {
@@ -93,8 +93,14 @@ class GanttChartPanel extends JPanel {
         for (int i = 0; i <= numTicks; i++) {
             int x = xOffset + i * tickSpacing;
             g.drawLine(x, height - 30, x, height - 20);
-            int time = (int)((i / (double) numTicks) * maxTime);
+            int time = (int) ((i / (double) numTicks) * maxTime);
             g.drawString(String.valueOf(time), x - 5, height - 5);
         }
     }
 }
+
+
+
+
+
+

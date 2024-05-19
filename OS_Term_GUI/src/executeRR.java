@@ -38,6 +38,7 @@ public class executeRR {
             }
 
             int executionTime = Math.min(currentProcess.getRemainingServiceTime(), timeSlice);
+            currentProcess.addTimeSlice(currentTime, currentTime + executionTime, 1);  // 실행 구간 추가
             currentTime += executionTime;
             currentProcess.setRemainingServiceTime(currentProcess.getRemainingServiceTime() - executionTime);
 
@@ -49,6 +50,7 @@ public class executeRR {
 
             if (currentProcess.getRemainingServiceTime() > 0) {
                 queue.add(currentProcess);  // 남은 시간이 있다면 큐의 끝으로
+                currentProcess.addTimeSlice(currentTime - executionTime, currentTime, 0);  // 대기 구간 추가
             } else {
                 currentProcess.setFinishTime(currentTime);
                 currentProcess.setTurnaroundTime(currentTime - currentProcess.getArrivalTime());
@@ -69,4 +71,3 @@ public class executeRR {
         SwingUtilities.invokeLater(() -> new ResultDisplay("Round Robin Scheduling Results", completedProcesses, avgWaitingTime, avgTurnaroundTime));
     }
 }
-

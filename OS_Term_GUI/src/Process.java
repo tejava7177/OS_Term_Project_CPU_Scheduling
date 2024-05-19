@@ -117,6 +117,9 @@ public class Process {
     private List<int[]> executionIntervals = new ArrayList<>();  // 실행 구간을 저장할 리스트
     private List<int[]> waitingIntervals = new ArrayList<>();  // 대기 구간을 저장할 리스트
 
+
+    private List<int[]> timeSlices;  // 각 슬라이스는 [시작 시간, 종료 시간, 상태]를 저장
+
     //객체 생성
     public Process(String id, int arrivalTime, int serviceTime, int priority) {
         this.id = id;
@@ -126,6 +129,8 @@ public class Process {
         this.priority = priority;
         this.visited = false;
         this.responseRatio = 0.0;                   //응답률은 0 으로 초기화
+
+        this.timeSlices = new ArrayList<>();
     }
 
     // Getter와 Setter
@@ -217,4 +222,15 @@ public class Process {
     public void addWaitingInterval(int start, int end) {
         waitingIntervals.add(new int[]{start, end});
     }
+
+
+    public void addTimeSlice(int start, int end, int state) {
+        timeSlices.add(new int[]{start, end, state});
+    }
+
+
+    public List<int[]> getTimeSlices() {
+        return timeSlices;
+    }
+
 }

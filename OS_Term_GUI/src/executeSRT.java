@@ -31,7 +31,6 @@ public class executeSRT {
             // 현재 시간에서 실행 가능한 프로세스를 readyQueue에 추가
             for (Process p : processes) {
                 if (p.getArrivalTime() <= currentTime && !completedProcesses.contains(p) && !readyQueue.contains(p)) {
-                    p.setRemainingServiceTime(p.getServiceTime()); // 초기 남은 시간 설정
                     readyQueue.add(p);
                 }
             }
@@ -44,14 +43,17 @@ public class executeSRT {
                 }
 
                 int executionTime = Math.min(currentProcess.getRemainingServiceTime(), timeSlice);
+                currentProcess.addTimeSlice(currentTime, currentTime + executionTime, 1);  // 실행 구간 추가
                 currentTime += executionTime;
                 currentProcess.setRemainingServiceTime(currentProcess.getRemainingServiceTime() - executionTime);
 
                 if (currentProcess.getRemainingServiceTime() == 0) {
                     currentProcess.setFinishTime(currentTime);
+                    currentProcess.setTurnaroundTime(currentTime - currentProcess.getArrivalTime());
+                    currentProcess.setWaitingTime(currentProcess.getTurnaroundTime() - currentProcess.getServiceTime());
                     completedProcesses.add(currentProcess);
-                    totalWaitingTime += currentProcess.getFinishTime() - currentProcess.getArrivalTime() - currentProcess.getServiceTime();
-                    totalTurnaroundTime += currentProcess.getFinishTime() - currentProcess.getArrivalTime();
+                    totalWaitingTime += currentProcess.getWaitingTime();
+                    totalTurnaroundTime += currentProcess.getTurnaroundTime();
                 } else {
                     readyQueue.add(currentProcess);
                 }
@@ -68,5 +70,3 @@ public class executeSRT {
         SwingUtilities.invokeLater(() -> new ResultDisplay("SRT Scheduling Results", completedProcesses, avgWaitingTime, avgTurnaroundTime));
     }
 }
-
-
