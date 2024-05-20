@@ -5,60 +5,67 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 public class executeSRT {
-    private List<Process> processes;
-    private int timeSlice;
-    private float avgWaitingTime = 0;
-    private float avgTurnaroundTime = 0;
+    private List<Process> processes;  // 프로세스 리스트
+    private int timeSlice;  // 타임 슬라이스
+    private float avgWaitingTime = 0;  // 평균 대기 시간
+    private float avgTurnaroundTime = 0;  // 평균 반환 시간
 
     public executeSRT(List<Process> processes, int timeSlice) {
+        // 생성자: 프로세스 리스트와 타임 슬라이스를 초기화
         this.processes = new ArrayList<>(processes);
         this.timeSlice = timeSlice;
     }
 
     public void run() {
+        // 준비 큐: 남은 실행 시간 기준으로 정렬 (도착 시간이 같으면 도착 시간 기준)
         PriorityQueue<Process> readyQueue = new PriorityQueue<>(
                 Comparator.comparingInt(Process::getRemainingServiceTime).thenComparingInt(Process::getArrivalTime)
         );
-        List<Process> completedProcesses = new ArrayList<>();
-        int currentTime = 0;
-        int totalWaitingTime = 0;
-        int totalTurnaroundTime = 0;
+        List<Process> completedProcesses = new ArrayList<>();  // 완료된 프로세스를 저장할 리스트
+        int currentTime = 0;  // 현재 시간
+        int totalWaitingTime = 0;  // 총 대기 시간
+        int totalTurnaroundTime = 0;  // 총 반환 시간
 
-        // 모든 프로세스의 도착 시간에 따라 정렬
+        // 모든 프로세스를 도착 시간 기준으로 정렬
         processes.sort(Comparator.comparingInt(Process::getArrivalTime));
 
+        // 모든 프로세스가 완료될 때까지 반복
         while (!completedProcesses.containsAll(processes)) {
-            // 현재 시간에서 실행 가능한 프로세스를 readyQueue에 추가
+            // 현재 시간에서 실행 가능한 프로세스를 준비 큐에 추가
             for (Process p : processes) {
                 if (p.getArrivalTime() <= currentTime && !completedProcesses.contains(p) && !readyQueue.contains(p)) {
                     readyQueue.add(p);
                 }
             }
 
-            Process currentProcess = readyQueue.poll();
+            Process currentProcess = readyQueue.poll();  // 준비 큐에서 남은 실행 시간이 가장 적은 프로세스를 꺼냄
 
             if (currentProcess != null) {
+                // 프로세스가 처음 실행되는 경우 시작 시간을 설정
                 if (currentProcess.getStartTime() == -1) {
                     currentProcess.setStartTime(currentTime);
                 }
 
+                // 타임 슬라이스 또는 남은 실행 시간 중 작은 값을 실행 시간으로 설정
                 int executionTime = Math.min(currentProcess.getRemainingServiceTime(), timeSlice);
                 currentProcess.addTimeSlice(currentTime, currentTime + executionTime, 1);  // 실행 구간 추가
-                currentTime += executionTime;
-                currentProcess.setRemainingServiceTime(currentProcess.getRemainingServiceTime() - executionTime);
+                currentTime += executionTime;  // 현재 시간을 업데이트
+                currentProcess.setRemainingServiceTime(currentProcess.getRemainingServiceTime() - executionTime);  // 남은 실행 시간을 업데이트
 
+                // 프로세스가 완료된 경우
                 if (currentProcess.getRemainingServiceTime() == 0) {
-                    currentProcess.setFinishTime(currentTime);
-                    currentProcess.setTurnaroundTime(currentTime - currentProcess.getArrivalTime());
-                    currentProcess.setWaitingTime(currentProcess.getTurnaroundTime() - currentProcess.getServiceTime());
-                    completedProcesses.add(currentProcess);
-                    totalWaitingTime += currentProcess.getWaitingTime();
-                    totalTurnaroundTime += currentProcess.getTurnaroundTime();
+                    currentProcess.setFinishTime(currentTime);  // 종료 시간 설정
+                    currentProcess.setTurnaroundTime(currentTime - currentProcess.getArrivalTime());  // 반환 시간 계산
+                    currentProcess.setWaitingTime(currentProcess.getTurnaroundTime() - currentProcess.getServiceTime());  // 대기 시간 계산
+                    completedProcesses.add(currentProcess);  // 완료된 프로세스 리스트에 추가
+                    totalWaitingTime += currentProcess.getWaitingTime();  // 총 대기 시간 업데이트
+                    totalTurnaroundTime += currentProcess.getTurnaroundTime();  // 총 반환 시간 업데이트
                 } else {
-                    readyQueue.add(currentProcess);
+                    readyQueue.add(currentProcess);  // 프로세스가 완료되지 않은 경우 다시 준비 큐에 추가
                 }
             } else {
-                currentTime++;  // 아무 프로세스도 실행되지 않으면 시간을 증가시켜 다음 가능한 프로세스를 대기
+                // 실행할 프로세스가 없는 경우 시간을 증가시켜 다음 가능한 프로세스를 대기
+                currentTime++;
             }
         }
 

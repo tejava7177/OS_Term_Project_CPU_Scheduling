@@ -114,8 +114,8 @@ public class Process {
     private int finishTime;                             // 실행 완료 시간
     private int waitingTime;                            // 대기 시간
     private int turnaroundTime;                         // 반환 시간
-    private List<int[]> executionIntervals = new ArrayList<>();  // 실행 구간을 저장할 리스트
-    private List<int[]> waitingIntervals = new ArrayList<>();  // 대기 구간을 저장할 리스트
+//    private List<int[]> executionIntervals = new ArrayList<>();  // 실행 구간을 저장할 리스트
+//    private List<int[]> waitingIntervals = new ArrayList<>();  // 대기 구간을 저장할 리스트
 
 
     private List<int[]> timeSlices;  // 각 슬라이스는 [시작 시간, 종료 시간, 상태]를 저장
@@ -206,22 +206,22 @@ public class Process {
         this.remainingServiceTime = remainingServiceTime;
     }
 
-    // 실행 구간과 대기 구간을 위한 메소드 추가
-    public List<int[]> getExecutionIntervals() {
-        return executionIntervals;
-    }
-
-    public List<int[]> getWaitingIntervals() {
-        return waitingIntervals;
-    }
-
-    public void addExecutionInterval(int start, int end) {
-        executionIntervals.add(new int[]{start, end});
-    }
-
-    public void addWaitingInterval(int start, int end) {
-        waitingIntervals.add(new int[]{start, end});
-    }
+//    // 실행 구간과 대기 구간을 위한 메소드 추가
+//    public List<int[]> getExecutionIntervals() {
+//        return executionIntervals;
+//    }
+//
+//    public List<int[]> getWaitingIntervals() {
+//        return waitingIntervals;
+//    }
+//
+//    public void addExecutionInterval(int start, int end) {
+//        executionIntervals.add(new int[]{start, end});
+//    }
+//
+//    public void addWaitingInterval(int start, int end) {
+//        waitingIntervals.add(new int[]{start, end});
+//    }
 
 
     public void addTimeSlice(int start, int end, int state) {
