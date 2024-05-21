@@ -206,22 +206,6 @@ public class Process {
         this.remainingServiceTime = remainingServiceTime;
     }
 
-//    // 실행 구간과 대기 구간을 위한 메소드 추가
-//    public List<int[]> getExecutionIntervals() {
-//        return executionIntervals;
-//    }
-//
-//    public List<int[]> getWaitingIntervals() {
-//        return waitingIntervals;
-//    }
-//
-//    public void addExecutionInterval(int start, int end) {
-//        executionIntervals.add(new int[]{start, end});
-//    }
-//
-//    public void addWaitingInterval(int start, int end) {
-//        waitingIntervals.add(new int[]{start, end});
-//    }
 
 
     public void addTimeSlice(int start, int end, int state) {
