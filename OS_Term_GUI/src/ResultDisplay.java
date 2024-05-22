@@ -53,6 +53,7 @@ class GanttChartPanel extends JPanel {
     private Set<Integer> timePoints;  // 간트 차트의 눈금을 표시할 시간 포인트
     private final int numTicks = 10;  // 기본 눈금 간격
 
+    // 간트 차트 생성
     public GanttChartPanel(List<Process> processes) {
         this.processes = processes;
         this.timePoints = new TreeSet<>();  // 시간 포인트를 정렬된 집합으로 저장
