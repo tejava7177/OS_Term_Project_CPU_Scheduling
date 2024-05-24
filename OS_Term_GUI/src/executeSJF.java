@@ -72,14 +72,4 @@ public class executeSJF {
         // 결과를 GUI로 표시
         SwingUtilities.invokeLater(() -> new ResultDisplay("SJF Scheduling Results", processes, avgWaitingTime, avgTurnaroundTime));
     }
-
-//    // 평균 대기 시간을 반환하는 메서드
-//    public float getAvgWaitingTime() {
-//        return avgWaitingTime;
-//    }
-//
-//    // 평균 반환 시간을 반환하는 메서드
-//    public float getAvgTurnaroundTime() {
-//        return avgTurnaroundTime;
-//    }
 }

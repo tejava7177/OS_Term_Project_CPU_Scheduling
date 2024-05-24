@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Queue;
 
 public class executeRR {
-    private List<Process> processes;  // 프로세스 리스트
-    private int timeSlice;  // 타임 슬라이스
+    private List<Process> processes;    // 프로세스 리스트
+    private int timeSlice;              // 타임 슬라이스
     private float avgWaitingTime = 0;  // 평균 대기 시간
     private float avgTurnaroundTime = 0;  // 평균 반환 시간
 

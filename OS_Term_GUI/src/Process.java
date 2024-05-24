@@ -114,8 +114,7 @@ public class Process {
     private int finishTime;                             // 실행 완료 시간
     private int waitingTime;                            // 대기 시간
     private int turnaroundTime;                         // 반환 시간
-//    private List<int[]> executionIntervals = new ArrayList<>();  // 실행 구간을 저장할 리스트
-//    private List<int[]> waitingIntervals = new ArrayList<>();  // 대기 구간을 저장할 리스트
+
 
 
     private List<int[]> timeSlices;  // 각 슬라이스는 [시작 시간, 종료 시간, 상태]를 저장
@@ -125,7 +124,7 @@ public class Process {
         this.id = id;
         this.arrivalTime = arrivalTime;
         this.serviceTime = serviceTime;
-        this.remainingServiceTime = serviceTime;  // 초기 남은 실행 시간은 전체 서비스 시간과 같다
+        this.remainingServiceTime = serviceTime;  // 초기 남은 실행 시간 = 전체 서비스 시간과
         this.priority = priority;
         this.visited = false;
         this.responseRatio = 0.0;                   //응답률은 0 으로 초기화
@@ -205,7 +204,6 @@ public class Process {
     public void setRemainingServiceTime(int remainingServiceTime) {
         this.remainingServiceTime = remainingServiceTime;
     }
-
 
 
     public void addTimeSlice(int start, int end, int state) {

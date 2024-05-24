@@ -7,8 +7,8 @@ import java.util.TreeSet;
 
 public class ResultDisplay extends JFrame {
     public ResultDisplay(String title, List<Process> processes, float avgWaitingTime, float avgTurnaroundTime) {
-        super(title);
-        setSize(800, 600);  // 창의 크기를 설정
+        super(title);  // 창의 제목 설정
+        setSize(800, 600);  // 창의 크기 설정
         setLocationRelativeTo(null);  // 창을 화면 중앙에 배치
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  // 창 닫기 버튼을 누르면 창을 닫음
         setLayout(new BorderLayout());  // 레이아웃을 BorderLayout으로 설정
@@ -46,29 +46,29 @@ public class ResultDisplay extends JFrame {
     }
 }
 
-
-
 class GanttChartPanel extends JPanel {
     private List<Process> processes;  // 프로세스 리스트
     private Set<Integer> timePoints;  // 간트 차트의 눈금을 표시할 시간 포인트
     private final int numTicks = 10;  // 기본 눈금 간격
 
-    // 간트 차트 생성
+    // 간트 차트 생성자
     public GanttChartPanel(List<Process> processes) {
         this.processes = processes;
         this.timePoints = new TreeSet<>();  // 시간 포인트를 정렬된 집합으로 저장
 
         // 각 프로세스의 도착 시간과 시작 시간을 timePoints에 추가
         for (Process process : processes) {
-            timePoints.add(process.getArrivalTime());
-            timePoints.add(process.getStartTime());
+            timePoints.add(process.getArrivalTime());  // 프로세스의 도착 시간을 시간 포인트에 추가
+            timePoints.add(process.getStartTime());  // 프로세스의 시작 시간을 시간 포인트에 추가
+
+            // 프로세스의 각 실행 슬라이스의 시작 시간과 종료 시간을 timePoints에 추가
             for (int[] slice : process.getTimeSlices()) {
-                timePoints.add(slice[0]);
-                timePoints.add(slice[1]);
+                timePoints.add(slice[0]);  // 슬라이스의 시작 시간 추가
+                timePoints.add(slice[1]);  // 슬라이스의 종료 시간 추가
             }
         }
 
-        setPreferredSize(new Dimension(800, Math.max(100, processes.size() * 60)));  // 간트 차트의 크기 설정
+        setPreferredSize(new Dimension(800, Math.max(100, processes.size() * 60)));  // 간트 차트의 크기를 동적으로 설정
     }
 
     @Override
@@ -116,15 +116,15 @@ class GanttChartPanel extends JPanel {
         for (int i = 0; i <= numTicks; i++) {
             int x = i * tickSpacing;
             int time = (int) ((i / (double) numTicks) * maxTime);
-            g.drawLine(x, tickYPos, x, tickYPos + 10);
-            g.drawString(String.valueOf(time), x - 5, tickYPos + 25);
+            g.drawLine(x, tickYPos, x, tickYPos + 10);  // 눈금 선 그리기
+            g.drawString(String.valueOf(time), x - 5, tickYPos + 25);  // 시간 포인트 그리기
         }
 
         // 의미 있는 시간 포인트에 눈금 추가
         for (int timePoint : timePoints) {
             int x = timeToX(timePoint, width, maxTime);
-            g.drawLine(x, tickYPos, x, tickYPos + 10);
-            g.drawString(String.valueOf(timePoint), x - 5, tickYPos + 25);
+            g.drawLine(x, tickYPos, x, tickYPos + 10);  // 눈금 선 그리기
+            g.drawString(String.valueOf(timePoint), x - 5, tickYPos + 25);  // 시간 포인트 그리기
         }
     }
 }

@@ -143,13 +143,6 @@ public class ProcessInputGUI extends JFrame {
 
 
 
-//    public static void main(String[] args) {
-//        SwingUtilities.invokeLater(ProcessInputGUI::new);
-//    }
-
-
-
-
     // comboBox 에서 선택된 알고리즘과 Run Selected Algorithm 버튼이 눌리면 조건문 실행
     private void executeAlgorithm(String algorithm) {
         switch (algorithm) {
