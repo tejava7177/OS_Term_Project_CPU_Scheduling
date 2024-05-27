@@ -10,7 +10,7 @@ public class executeSJF {
     private float avgWaitingTime = 0; // 평균 대기 시간
     private float avgTurnaroundTime = 0; // 평균 반환 시간
 
-    // 생성자: 프로세스 리스트를 받아 객체 내부에 새로운 리스트로 복사하여 초기화
+    // 프로세스 리스트를 받아 객체 내부에 새로운 리스트로 복사하여 초기화
     public executeSJF(List<Process> processes) {
         this.processes = new ArrayList<>(processes);
     }
@@ -31,7 +31,7 @@ public class executeSJF {
             for (Process process : processes) {
                 if (process.getArrivalTime() <= currentTime && !process.isVisited()) {
                     readyQueue.offer(process);
-                    process.setVisited(true); // 프로세스 방문 표시
+                    process.setVisited(true); // 프로세스 방문 했다는 표시
                 }
             }
 

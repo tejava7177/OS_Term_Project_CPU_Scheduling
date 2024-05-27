@@ -15,7 +15,7 @@ public class executeFCFS {
 
     // FCFS 스케줄링 알고리즘 실행 메서드
     public void run() {
-        int currentTime = 0;                // 현재 시간, 스케줄링 시작 시 0부터 시작
+        int currentTime = 0;                // 현재 시간, 시작 시 0부터 시작
         float totalWaitingTime = 0;         // 총 대기 시간
         float totalTurnaroundTime = 0;      // 총 반환 시간
 
@@ -36,7 +36,7 @@ public class executeFCFS {
             process.setTurnaroundTime(currentTime - process.getArrivalTime());                        // 반환 시간과 대기 시간 계산
             process.setWaitingTime(process.getTurnaroundTime() - process.getServiceTime());
 
-            // 총 대기 시간과 총 반환 시간 업데이트
+            // 총 대기 시간과 총 반환 시간 누적합 계산 업데이트
             totalWaitingTime += process.getWaitingTime();
             totalTurnaroundTime += process.getTurnaroundTime();
         }
