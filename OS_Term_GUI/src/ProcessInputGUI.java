@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProcessInputGUI extends JFrame {
-    private List<Process> processes;
+    private List<Process> processes;                //프로세스 정보 리스트
     // GUI 구성요소
-    private JTextField idField, arrivalTimeField, serviceTimeField, priorityField;
-    private JButton addButton, deleteButton, runAlgorithmButton;
-    private JTextArea processListDisplay;
-    private JComboBox<String> algorithmComboBox;
+    private JTextField idField, arrivalTimeField, serviceTimeField, priorityField;      //ID, 도착시간, 서비스시간, 우선순위 입력 필드
+    private JButton addButton, deleteButton, runAlgorithmButton;                        //프로세스 추가, 삭제, 구동 버튼
+    private JTextArea processListDisplay;                                               //프로세스 정보 리스트 출력
+    private JComboBox<String> algorithmComboBox;                                        //프로세스 선택
 
-    private int timeSlice; // 타임슬라이스를 저장할 변수 추가
+    private int timeSlice;                                                              // 타임슬라이스를 저장할 변수 추가
 
     public ProcessInputGUI() {
         super("Process Input");                         //윈도우 제목
@@ -26,7 +26,7 @@ public class ProcessInputGUI extends JFrame {
         setVisible(true);               //화면에 표시
     }
 
-    // GUI 컴포넌트 초기화 함수
+    // GUI 컴포넌트 초기화 메서드
     private void initializeComponents() {
         processes = new ArrayList<>();              //리스트에 프로세스의 ID, 도착 시간, 서비스 시간, 우선 순위 등의 데이터 저장
 
@@ -39,10 +39,10 @@ public class ProcessInputGUI extends JFrame {
         processListDisplay.setEditable(false);
 
         addButton = new JButton("Add Process");                 //Process 데이터 입력
-        addButton.addActionListener(this::addProcessAction);        // 추가 이벤트 처리
+        addButton.addActionListener(this::addProcessClick);        // 추가 이벤트 처리
 
         deleteButton = new JButton("Delete Process");           //Process 데이터 삭제
-        deleteButton.addActionListener(this::deleteProcessAction);  // 삭제 이벤트 처리
+        deleteButton.addActionListener(this::deleteProcessClick);  // 삭제 이벤트 처리
 
         // 메뉴를 선택할 수 있는 ComboBox 생성 > 알고리즘을 선택할 수 있음
         algorithmComboBox = new JComboBox<>(new String[]{"FCFS", "SJF", "Non-preemptive Priority", "Preemptive Priority", "Round Robin", "SRT", "HRN"});
@@ -69,7 +69,7 @@ public class ProcessInputGUI extends JFrame {
     }
 
     //프로세스 데이터를 추가하는 함수
-    private void addProcessAction(ActionEvent e) {
+    private void addProcessClick(ActionEvent e) {
         try {
             String id = idField.getText();              // Process ID 는 문자열로 받아옴
             int arrival = Integer.parseInt(arrivalTimeField.getText());     // 정수형으로 사용자에게 입력 받음.
@@ -93,7 +93,7 @@ public class ProcessInputGUI extends JFrame {
     }
 
     // 삭제 버튼을 눌렀을 경우
-    private void deleteProcessAction(ActionEvent e){
+    private void deleteProcessClick(ActionEvent e){
         processes.clear();                      //객체 삭제
         processListDisplay.setText("");         //프로세스 데이터 정보 리스트 출력 textfields 비우기
     }
@@ -120,7 +120,8 @@ public class ProcessInputGUI extends JFrame {
         String selectedAlgorithm = (String) algorithmComboBox.getSelectedItem();    //선택한 알고리즘을 문자열로 가져옴
         // timeSlice 가 필요한 알고리즘은 추가로 사용자에게 입력 받는다. (RR, SRT)
         if("Round Robin".equals(selectedAlgorithm) || "SRT".equals(selectedAlgorithm)){
-            String input = JOptionPane.showInputDialog(this, "Time Slice 입력 :", "Time slice Input", JOptionPane.QUESTION_MESSAGE);
+            String input = JOptionPane.showInputDialog
+                    (this, "Time Slice 입력 :", "Time slice Input", JOptionPane.QUESTION_MESSAGE);
             try{
                 timeSlice = Integer.parseInt(input);        //timeSlice 변수에 저장
 

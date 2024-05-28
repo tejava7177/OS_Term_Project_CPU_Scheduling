@@ -5,12 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ac692fca-c950-4c6b-b88f-1b8f1555b47d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../../OS_Term_GUI/out/production/OS_Term_GUI/executeRR.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../../OS_Term_GUI/src/executeRR.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../OS_Term_GUI/out/production/OS_Term_GUI/GanttChartPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../OS_Term_GUI/out/production/OS_Term_GUI/GanttChartPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../OS_Term_GUI/out/production/OS_Term_GUI/GanttChartPanel.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../../OS_Term_GUI/out/production/OS_Term_GUI/Process.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../OS_Term_GUI/out/production/OS_Term_GUI/Process.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../OS_Term_GUI/out/production/OS_Term_GUI/ProcessInputGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../OS_Term_GUI/out/production/OS_Term_GUI/ProcessInputGUI.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../OS_Term_GUI/out/production/OS_Term_GUI/ResultDisplay.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../OS_Term_GUI/out/production/OS_Term_GUI/ResultDisplay.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../OS_Term_GUI/out/production/OS_Term_GUI/executeFCFS.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../OS_Term_GUI/out/production/OS_Term_GUI/executeFCFS.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../OS_Term_GUI/out/production/OS_Term_GUI/executeHRN.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../OS_Term_GUI/out/production/OS_Term_GUI/executeHRN.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../OS_Term_GUI/out/production/OS_Term_GUI/executeNpP.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../OS_Term_GUI/out/production/OS_Term_GUI/executeNpP.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../OS_Term_GUI/out/production/OS_Term_GUI/executeSRT.class" beforeDir="false" afterPath="$PROJECT_DIR$/../../OS_Term_GUI/out/production/OS_Term_GUI/executeSRT.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../OS_Term_GUI/src/Process.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../OS_Term_GUI/src/Process.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../OS_Term_GUI/src/ProcessInputGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../OS_Term_GUI/src/ProcessInputGUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../OS_Term_GUI/src/ResultDisplay.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../OS_Term_GUI/src/ResultDisplay.java" afterDir="false" />
@@ -39,13 +41,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "settings.editor.selected.configurable": "reference.projectsettings.compiler.javacompiler"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.projectsettings.compiler.javacompiler&quot;
   }
-}]]></component>
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/out/production/OS_Term_Project" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
