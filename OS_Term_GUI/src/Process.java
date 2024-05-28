@@ -14,6 +14,8 @@ public class Process {
     private int finishTime;                             // 실행 완료 시간
     private int waitingTime;                            // 대기 시간
     private int turnaroundTime;                         // 반환 시간
+    private int responseTime;                           //응답 시간
+    private int originalOrder;                          // 입력 순서
 
     private List<int[]> timeSave;  // 각 슬라이스는 [시작 시간, 종료 시간, 상태]를 저장 (간트 차트 그리기 위해 저장)
 
@@ -72,6 +74,10 @@ public class Process {
         this.waitingTime = waitingTime;
     }
 
+    public void setResponseTime(int responseTime) { this.responseTime = responseTime; }
+
+    public int getResponseTime() { return responseTime; }
+
     public boolean isVisited() {
         return visited;
     }
@@ -111,6 +117,15 @@ public class Process {
     }
     public List<int[]> gettimeSave() {
         return timeSave;
+    }
+
+
+    public void setOriginalOrder(int order) {
+        this.originalOrder = order;
+    }
+
+    public int getOriginalOrder() {
+        return originalOrder;
     }
 
 }

@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.TreeSet;
 
 public class ResultDisplay extends JFrame {
-    public ResultDisplay(String title, List<Process> processes, float avgWaitingTime, float avgTurnaroundTime) {
+    public ResultDisplay(String title, List<Process> processes, float avgWaitingTime, float avgTurnaroundTime, float avgResponseTime) {
         super(title);                                       // 창의 제목 설정
         setSize(800, 600);                      // 창의 크기 설정
         setLocationRelativeTo(null);                        // 창을 화면 중앙에 배치
@@ -13,7 +13,7 @@ public class ResultDisplay extends JFrame {
         setLayout(new BorderLayout());                      // 레이아웃을 BorderLayout으로 설정
 
         // 테이블에 표시할 열 이름 설정
-        String[] columns = {"Process ID", "Start Time", "Finish Time", "Waiting Time", "Turnaround Time"};
+        String[] columns = {"Process ID", "Start Time", "Finish Time", "Waiting Time", "Turnaround Time", "Response Time"};
         DefaultTableModel model = new DefaultTableModel(columns, 0);   // 테이블 모델 생성
         JTable table = new JTable(model);                                       // 테이블 생성
         JScrollPane scrollPane = new JScrollPane(table);                        // 테이블을 스크롤 가능한 패널에 추가
@@ -26,7 +26,8 @@ public class ResultDisplay extends JFrame {
                     process.getStartTime(),
                     process.getFinishTime(),
                     process.getWaitingTime(),
-                    process.getTurnaroundTime()
+                    process.getTurnaroundTime(),
+                    process.getResponseTime()
             });
         }
 
@@ -34,10 +35,11 @@ public class ResultDisplay extends JFrame {
         GanttChartPanel ganttChartPanel = new GanttChartPanel(processes);
         add(ganttChartPanel, BorderLayout.SOUTH);                       // 간트 차트를 아래쪽에 배치
 
-        // 평균 대기 시간과 반환 시간을 표시하는 패널 추가
+        // 평균 대기 시간, 반환 시간, 응답 시간을 표시하는 패널 추가
         JPanel averagesPanel = new JPanel();                             // 새로운 패널 생성
         averagesPanel.add(new JLabel("Average Waiting Time: " + String.format("%.2f", avgWaitingTime)));  // AWT
         averagesPanel.add(new JLabel("Average Turnaround Time: " + String.format("%.2f", avgTurnaroundTime)));  // ATT
+        averagesPanel.add(new JLabel("Average Response Time: " + String.format("%.2f", avgResponseTime)));  // ART
         add(averagesPanel, BorderLayout.NORTH);  // 패널을 위쪽에 배치
 
         setVisible(true);                                                // 창을 표시
@@ -121,6 +123,3 @@ public class ResultDisplay extends JFrame {
         }
     }
 }
-
-
-

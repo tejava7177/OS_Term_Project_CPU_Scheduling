@@ -1,19 +1,21 @@
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public class executeRR {
     private List<Process> processes;    // 프로세스 리스트
     private int timeSlice;              // 타임 슬라이스
-    private float avgWaitingTime = 0;  // 평균 대기 시간
+    private float avgWaitingTime = 0;   // 평균 대기 시간
     private float avgTurnaroundTime = 0;  // 평균 반환 시간
+    private float avgResponseTime = 0;  // 평균 응답 시간
 
     public executeRR(List<Process> processes, int timeSlice) {
         // 생성자: 프로세스 리스트와 타임 슬라이스를 초기화
         this.processes = new ArrayList<>(processes);
         this.timeSlice = timeSlice;
+        // 원래 입력 순서를 설정
+        for (int i = 0; i < processes.size(); i++) {
+            this.processes.get(i).setOriginalOrder(i);
+        }
     }
 
     public void run() {
@@ -22,6 +24,7 @@ public class executeRR {
         int currentTime = 0;  // 현재 시간
         int totalWaitingTime = 0;  // 총 대기 시간
         int totalTurnaroundTime = 0;  // 총 반환 시간
+        int totalResponseTime = 0;  // 총 응답 시간
 
         // 프로세스를 도착 시간 기준으로 정렬
         processes.sort((p1, p2) -> Integer.compare(p1.getArrivalTime(), p2.getArrivalTime()));
@@ -38,6 +41,7 @@ public class executeRR {
             Process currentProcess = queue.poll();  // 큐에서 프로세스를 꺼냄
             if (currentProcess.getStartTime() == -1) {
                 currentProcess.setStartTime(currentTime);  // 프로세스 시작 시간 설정
+
             }
 
             int executionTime = Math.min(currentProcess.getRemainingServiceTime(), timeSlice);  // 실행 시간 결정
@@ -60,19 +64,25 @@ public class executeRR {
                 currentProcess.setFinishTime(currentTime);  // 종료 시간 설정
                 currentProcess.setTurnaroundTime(currentTime - currentProcess.getArrivalTime());  // 반환 시간 계산
                 currentProcess.setWaitingTime(currentProcess.getTurnaroundTime() - currentProcess.getServiceTime());  // 대기 시간 계산
+                currentProcess.setResponseTime(currentProcess.getWaitingTime() + 1);  // 응답 시간 = 대기 시간 + 1
                 completedProcesses.add(currentProcess);  // 완료된 프로세스 리스트에 추가
             }
         }
 
-        // 평균 대기 시간과 반환 시간 계산
+        // 평균 대기 시간, 반환 시간 및 응답 시간 계산
         for (Process p : completedProcesses) {
             totalWaitingTime += p.getWaitingTime();
             totalTurnaroundTime += p.getTurnaroundTime();
+            totalResponseTime += p.getResponseTime();
         }
         avgWaitingTime = (float) totalWaitingTime / completedProcesses.size();
         avgTurnaroundTime = (float) totalTurnaroundTime / completedProcesses.size();
+        avgResponseTime = (float) totalResponseTime / completedProcesses.size();
+
+        // 원래 입력 순서대로 정렬하여 결과를 표시
+        completedProcesses.sort(Comparator.comparingInt(Process::getOriginalOrder));
 
         // 결과를 GUI로 표시
-        SwingUtilities.invokeLater(() -> new ResultDisplay("Round Robin Scheduling Results", completedProcesses, avgWaitingTime, avgTurnaroundTime));
+        SwingUtilities.invokeLater(() -> new ResultDisplay("Round Robin Scheduling Results", completedProcesses, avgWaitingTime, avgTurnaroundTime, avgResponseTime));
     }
 }

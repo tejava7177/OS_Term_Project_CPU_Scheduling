@@ -26,46 +26,45 @@ public class ProcessInputGUI extends JFrame {
         setVisible(true);               //화면에 표시
     }
 
-    // GUI 컴포넌트 초기화 메서드
+
     private void initializeComponents() {
-        processes = new ArrayList<>();              //리스트에 프로세스의 ID, 도착 시간, 서비스 시간, 우선 순위 등의 데이터 저장
+        processes = new ArrayList<>();  // 리스트에 프로세스의 ID, 도착 시간, 서비스 시간, 우선 순위 등의 데이터를 저장
 
-        //크기 설정
-        idField = new JTextField(5);                // Process ID 입력 칸
-        arrivalTimeField = new JTextField(5);       // 도착 시간 입력 칸
-        serviceTimeField = new JTextField(5);       // 서비스 시간 입력 칸
-        priorityField = new JTextField(5);          // 우선순위 입력 칸
-        processListDisplay = new JTextArea(10, 20);         //입력된 프로세스 출력 칸
-        processListDisplay.setEditable(false);
+        // 크기 설정
+        idField = new JTextField(5);  // Process ID 입력 칸
+        arrivalTimeField = new JTextField(5);  // 도착 시간 입력 칸
+        serviceTimeField = new JTextField(5);  // 서비스 시간 입력 칸
+        priorityField = new JTextField(5);  // 우선순위 입력 칸
+        processListDisplay = new JTextArea(10, 20);  // 입력된 프로세스 출력 칸
+        processListDisplay.setEditable(false);  // 수정 불가능하게 설정
 
-        addButton = new JButton("Add Process");                 //Process 데이터 입력
-        addButton.addActionListener(this::addProcessClick);        // 추가 이벤트 처리
+        addButton = new JButton("Add Process");  // Process 데이터 입력 버튼
+        addButton.addActionListener(this::addProcessClick);  // 추가 이벤트 처리
 
-        deleteButton = new JButton("Delete Process");           //Process 데이터 삭제
+        deleteButton = new JButton("Delete Process");  // Process 데이터 삭제 버튼
         deleteButton.addActionListener(this::deleteProcessClick);  // 삭제 이벤트 처리
 
-        // 메뉴를 선택할 수 있는 ComboBox 생성 > 알고리즘을 선택할 수 있음
+        // 알고리즘을 선택할 수 있는 ComboBox 생성
         algorithmComboBox = new JComboBox<>(new String[]{"FCFS", "SJF", "Non-preemptive Priority", "Preemptive Priority", "Round Robin", "SRT", "HRN"});
-        runAlgorithmButton = new JButton("Run Selected Algorithm");
-        runAlgorithmButton.addActionListener(this::runSelectedAlgorithm);   //이벤트 처리
-
+        runAlgorithmButton = new JButton("Run Selected Algorithm");  // 알고리즘 실행 버튼
+        runAlgorithmButton.addActionListener(this::runSelectedAlgorithm);  // 알고리즘 실행 이벤트 처리
     }
 
-    //GUI 환경에 컴포넌트를 보여주는 함수: 이와 같은 컴포넌트들로 GUI 환경을 구성함.
+    // 각 컴포넌트를 순서대로 추가하여 GUI를 구성한다.
     private void addComponentsToFrame() {
-        add(new JLabel("Process ID:"));
-        add(idField);
-        add(new JLabel("Arrival Time:"));
-        add(arrivalTimeField);
-        add(new JLabel("Service Time:"));
-        add(serviceTimeField);
-        add(new JLabel("Priority(default 0):"));
-        add(priorityField);
-        add(deleteButton);
-        add(addButton);
-        add(algorithmComboBox);
-        add(new JScrollPane(processListDisplay));
-        add(runAlgorithmButton, Component.CENTER_ALIGNMENT);        //실행 버튼은 가운데로 배치함.
+        add(new JLabel("Process ID:"));  // Process ID 레이블 추가
+        add(idField);  // Process ID 입력 칸 추가
+        add(new JLabel("Arrival Time:"));  // 도착 시간 레이블 추가
+        add(arrivalTimeField);  // 도착 시간 입력 칸 추가
+        add(new JLabel("Service Time:"));  // 서비스 시간 레이블 추가
+        add(serviceTimeField);  // 서비스 시간 입력 칸 추가
+        add(new JLabel("Priority (default 0):"));  // 우선순위 레이블 추가
+        add(priorityField);  // 우선순위 입력 칸 추가
+        add(deleteButton);  // 프로세스 삭제 버튼 추가
+        add(addButton);  // 프로세스 추가 버튼 추가
+        add(algorithmComboBox);  // 알고리즘 선택 ComboBox 추가
+        add(new JScrollPane(processListDisplay));  // 프로세스 리스트 출력 칸 추가 (스크롤 가능)
+        add(runAlgorithmButton);  // 알고리즘 실행 버튼을 가운데 정렬하여 추가
     }
 
     //프로세스 데이터를 추가하는 함수

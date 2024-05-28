@@ -9,11 +9,16 @@ public class executeSRT {
     private int timeSlice;                                  // 타임 슬라이스
     private float avgWaitingTime = 0;                       // 평균 대기 시간
     private float avgTurnaroundTime = 0;                    // 평균 반환 시간
+    private float avgResponseTime = 0;                      // 평균 응답 시간
 
     public executeSRT(List<Process> processes, int timeSlice) {
         // 생성자: 프로세스 리스트와 타임 슬라이스를 초기화
         this.processes = new ArrayList<>(processes);
         this.timeSlice = timeSlice;
+        // 원래 입력 순서를 설정
+        for (int i = 0; i < processes.size(); i++) {
+            this.processes.get(i).setOriginalOrder(i);
+        }
     }
 
     public void run() {
@@ -25,6 +30,7 @@ public class executeSRT {
         int currentTime = 0;                                    // 현재 시간
         int totalWaitingTime = 0;                               // 총 대기 시간
         int totalTurnaroundTime = 0;                            // 총 반환 시간
+        int totalResponseTime = 0;                              // 총 응답 시간
 
         // 모든 프로세스를 도착 시간 기준으로 정렬
         processes.sort(Comparator.comparingInt(Process::getArrivalTime));
@@ -41,9 +47,9 @@ public class executeSRT {
             Process currentProcess = readyQueue.poll();         // 준비 큐에서 남은 실행 시간이 가장 적은 프로세스를 꺼냄
 
             if (currentProcess != null) {
-
                 if (currentProcess.getStartTime() == -1) {
                     currentProcess.setStartTime(currentTime);   // 프로세스가 처음 실행되는 경우 시작 시간을 설정
+
                 }
 
                 // 타임 슬라이스 또는 남은 실행 시간 중 작은 값을 실행 시간으로 설정
@@ -57,9 +63,11 @@ public class executeSRT {
                     currentProcess.setFinishTime(currentTime);                                          // 종료 시간 설정
                     currentProcess.setTurnaroundTime(currentTime - currentProcess.getArrivalTime());    // 반환 시간 계산
                     currentProcess.setWaitingTime(currentProcess.getTurnaroundTime() - currentProcess.getServiceTime());  // 대기 시간 계산
+                    currentProcess.setResponseTime(currentProcess.getWaitingTime() + 1);  // 응답 시간 = 대기 시간 + 1
                     completedProcesses.add(currentProcess);                                             // 완료된 프로세스 리스트에 추가
                     totalWaitingTime += currentProcess.getWaitingTime();                                // 총 대기 시간 업데이트
                     totalTurnaroundTime += currentProcess.getTurnaroundTime();                          // 총 반환 시간 업데이트
+                    totalResponseTime += currentProcess.getResponseTime();                              // 총 응답 시간 업데이트
                 } else {
                     readyQueue.add(currentProcess);                                // 프로세스가 완료되지 않은 경우 다시 준비 큐에 추가
                 }
@@ -68,11 +76,15 @@ public class executeSRT {
             }
         }
 
-        // 평균 대기 시간과 반환 시간 계산
+        // 평균 대기 시간, 반환 시간 및 응답 시간 계산
         avgWaitingTime = (float) totalWaitingTime / processes.size();
         avgTurnaroundTime = (float) totalTurnaroundTime / processes.size();
+        avgResponseTime = (float) totalResponseTime / processes.size();
+
+        // 원래 입력 순서대로 정렬하여 결과를 표시
+        completedProcesses.sort(Comparator.comparingInt(Process::getOriginalOrder));
 
         // 결과를 GUI로 표시
-        SwingUtilities.invokeLater(() -> new ResultDisplay("SRT Scheduling Results", completedProcesses, avgWaitingTime, avgTurnaroundTime));
+        SwingUtilities.invokeLater(() -> new ResultDisplay("SRT Scheduling Results", completedProcesses, avgWaitingTime, avgTurnaroundTime, avgResponseTime));
     }
 }
