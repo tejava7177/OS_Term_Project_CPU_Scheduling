@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 public class executePP {
-    private List<Process> processes;  // 프로세스 리스트
-    private PriorityQueue<Process> readyQueue;  // 준비 큐 (우선순위 기준)
+    private List<Process> processes;                    // 프로세스 리스트
+    private PriorityQueue<Process> readyQueue;           // 준비 큐 (우선순위 기준)
     private List<Process> completedProcesses = new ArrayList<>();  // 완료된 프로세스를 저장할 리스트
-    private float avgWaitingTime = 0;  // 평균 대기 시간
-    private float avgTurnaroundTime = 0;  // 평균 반환 시간
-    private float avgResponseTime = 0;  // 평균 응답 시간
+    private float avgWaitingTime = 0;                       // 평균 대기 시간
+    private float avgTurnaroundTime = 0;                    // 평균 반환 시간
+    private float avgResponseTime = 0;                      // 평균 응답 시간
 
     public executePP(List<Process> processes) {
         // 프로세스 리스트를 초기화하고 준비 큐를 우선순위 기준으로 설정
@@ -66,15 +66,15 @@ public class executePP {
 
             // 현재 프로세스를 1단위 시간 실행
             if (currentProcess != null) {
-                currentProcess.setRemainingServiceTime(currentProcess.getRemainingServiceTime() - 1);  // 남은 실행 시간 감소
+                currentProcess.setRemainingServiceTime(currentProcess.getRemainingServiceTime() - 1);   // 남은 실행 시간 감소
                 if (currentProcess.getRemainingServiceTime() == 0) {
                     // 현재 프로세스가 완료된 경우
-                    currentProcess.setFinishTime(currentTime);  // 종료 시간 설정
+                    currentProcess.setFinishTime(currentTime);                                          // 종료 시간 설정
                     currentProcess.setTurnaroundTime(currentTime - currentProcess.getArrivalTime());  // 반환 시간 계산
                     currentProcess.setWaitingTime(currentProcess.getTurnaroundTime() - currentProcess.getServiceTime());  // 대기 시간 계산
-                    currentProcess.setResponseTime(currentProcess.getWaitingTime() + 1);  // 응답 시간 = 대기 시간 + 1
-                    completedProcesses.add(currentProcess);  // 완료된 프로세스 리스트에 추가
-                    currentProcess = null;  // 현재 프로세스 초기화
+                    currentProcess.setResponseTime(currentProcess.getWaitingTime() + 1);                // 응답 시간 = 대기 시간 + 1
+                    completedProcesses.add(currentProcess);                                             // 완료된 프로세스 리스트에 추가
+                    currentProcess = null;                                                              // 현재 프로세스 초기화
                 }
             }
         }
@@ -85,6 +85,7 @@ public class executePP {
             totalTurnaroundTime += p.getTurnaroundTime();
             totalResponseTime += p.getResponseTime();
         }
+
         avgWaitingTime = totalWaitingTime / completedProcesses.size();
         avgTurnaroundTime = totalTurnaroundTime / completedProcesses.size();
         avgResponseTime = totalResponseTime / completedProcesses.size();

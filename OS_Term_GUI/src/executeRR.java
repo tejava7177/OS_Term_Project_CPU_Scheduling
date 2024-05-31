@@ -75,6 +75,7 @@ public class executeRR {
             totalTurnaroundTime += p.getTurnaroundTime();
             totalResponseTime += p.getResponseTime();
         }
+
         avgWaitingTime = (float) totalWaitingTime / completedProcesses.size();
         avgTurnaroundTime = (float) totalTurnaroundTime / completedProcesses.size();
         avgResponseTime = (float) totalResponseTime / completedProcesses.size();

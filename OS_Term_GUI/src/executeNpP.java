@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 public class executeNpP {
-    private List<Process> processes;  // 프로세스 리스트
-    private float avgWaitingTime = 0;  // 평균 대기 시간
-    private float avgTurnaroundTime = 0;  // 평균 반환 시간
-    private float avgResponseTime = 0;  // 평균 응답 시간
+    private List<Process> processes;                    // 프로세스 리스트
+    private float avgWaitingTime = 0;                   // 평균 대기 시간
+    private float avgTurnaroundTime = 0;                // 평균 반환 시간
+    private float avgResponseTime = 0;                  // 평균 응답 시간
 
     public executeNpP(List<Process> processes) {
         this.processes = new ArrayList<>(processes);
@@ -19,8 +19,10 @@ public class executeNpP {
     }
 
     public void run() {
-        // 준비 큐: 우선순위 기준으로 정렬 (우선순위가 낮을수록 높은 우선순위)
+
+        // 준비 큐를 우선순위 기준으로 정렬 (숫자가 낮을수록 높은 우선순위)
         PriorityQueue<Process> readyQueue = new PriorityQueue<>(Comparator.comparingInt(Process::getPriority));
+
         int currentTime = 0;            // 현재 시간
         float totalWaitingTime = 0;     // 총 대기 시간
         float totalTurnaroundTime = 0;  // 총 반환 시간
@@ -37,15 +39,26 @@ public class executeNpP {
                 }
             }
 
-            // 준비 큐가 비어있는 경우 다음 도착할 프로세스의 도착 시간까지 현재 시간을 점프
+
+            // 준비 큐가 비어있는 경우, 다음 도착할 프로세스의 도착 시간까지 현재 시간을 점프
             if (readyQueue.isEmpty()) {
-                currentTime = processes.stream()
-                        .filter(p -> !p.isVisited())                            // 아직 준비 큐에 추가되지 않은 프로세스들을 필터링
-                        .min(Comparator.comparingInt(Process::getArrivalTime))  // 도착 시간이 가장 빠른 프로세스를 찾음
-                        .map(Process::getArrivalTime)                           // 찾은 프로세스의 도착 시간을 가져옴
-                        .orElse(currentTime);                                   // 찾은 프로세스가 없다면 현재 시간 유지
+                int earliestArrivalTime = Integer.MAX_VALUE;
+
+                // 아직 방문하지 않은 프로세스 중에서 가장 이른 도착 시간을 찾음
+                for (Process process : processes) {
+                    if (!process.isVisited() && process.getArrivalTime() < earliestArrivalTime) {
+                        earliestArrivalTime = process.getArrivalTime();
+                    }
+                }
+
+                // 만약 유효한 최소 도착 시간이 발견되었다면, 현재 시간을 해당 도착 시간으로 설정
+                if (earliestArrivalTime != Integer.MAX_VALUE) {
+                    currentTime = earliestArrivalTime;
+                }
+
                 continue;
             }
+
 
             // 준비 큐에서 우선순위가 가장 높은 프로세스를 꺼냄
             Process currentProcess = readyQueue.poll();
@@ -54,7 +67,7 @@ public class executeNpP {
             }
 
             // 프로세스 실행
-            currentProcess.setStartTime(currentTime);  // 시작 시간 설정
+            currentProcess.setStartTime(currentTime);                                                               // 시작 시간 설정
             currentProcess.addTimeSlice(currentTime, currentTime + currentProcess.getServiceTime(), 1);  // 실행 구간 추가
             currentProcess.setFinishTime(currentTime + currentProcess.getServiceTime());                            // 종료 시간 설정
             currentProcess.setWaitingTime(currentProcess.getStartTime() - currentProcess.getArrivalTime());         // 대기 시간 계산
