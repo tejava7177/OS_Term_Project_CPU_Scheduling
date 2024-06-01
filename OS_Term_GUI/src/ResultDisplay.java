@@ -30,7 +30,6 @@ public class ResultDisplay extends JFrame {
                     process.getResponseTime()
             });
         }
-
         // 간트 차트 패널 추가
         GanttChartPanel ganttChartPanel = new GanttChartPanel(processes);
         add(ganttChartPanel, BorderLayout.SOUTH);                       // 간트 차트를 아래쪽에 배치
@@ -114,7 +113,7 @@ public class ResultDisplay extends JFrame {
         // 눈금 그리기 메서드 추가
         private void drawTicks(Graphics g, int width, int height, int maxTime, int yPosition) {
             g.setColor(Color.RED);
-            int tickInterval = 5;  // 눈금 간격 설정 (예: 5 단위)
+            int tickInterval = 5;
             for (int i = 0; i <= maxTime; i += tickInterval) {
                 int x = timeToX(i, width, maxTime);
                 g.drawLine(x, yPosition, x, yPosition + 10); // 눈금의 위치를 조정하여 간트 차트와 겹치지 않도록 함

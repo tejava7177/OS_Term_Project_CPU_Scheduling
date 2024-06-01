@@ -26,6 +26,7 @@ public class executeSRT {
         PriorityQueue<Process> readyQueue = new PriorityQueue<>(
                 Comparator.comparingInt(Process::getRemainingServiceTime).thenComparingInt(Process::getArrivalTime)
         );
+
         List<Process> completedProcesses = new ArrayList<>();   // 완료된 프로세스를 저장할 리스트
         int currentTime = 0;                                    // 현재 시간
         int totalWaitingTime = 0;                               // 총 대기 시간
